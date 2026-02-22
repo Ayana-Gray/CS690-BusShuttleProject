@@ -13,6 +13,7 @@ public class DataManager {
 
         fileSaver = new FileSaver("passenger-data.txt");
 
+
         Loops = new List<Loop>();
         Loops.Add(new Loop("Red"));
         Loops.Add(new Loop("Green"));
@@ -32,9 +33,17 @@ public class DataManager {
         Loops[0].Stops.Add(Stops[4]);
 
         Drivers = new List<Driver>();
-        Drivers.Add(new Driver("Huseyin Ergin"));
-        Drivers.Add(new Driver("Jane Doe"));
 
+        if(File.Exists("drivers.txt")) {
+            var DriverFileContent = File.ReadAllLines("drivers.txt");
+            foreach(var line in DriverFileContent) {
+                var driverName = line;
+                var driver = new Driver(driverName);
+                Drivers.Add(driver);
+
+            }
+
+        }
         PassengerData = new List<PassengerData>();
 
         if(File.Exists("passenger-data.txt")) {
@@ -69,6 +78,12 @@ public class DataManager {
         }
     }
 
+    public void SynchronizeDrivers() {
+        File.Delete("drivers.txt");
+        foreach(var driver in Drivers) {
+            File.AppendAllText("drivers.txt",driver.Name+Environment.NewLine);
+        }
+    }
     public void AddStop(Stop stop) {
         Stops.Add(stop);
         SynchronizeStops();
@@ -77,5 +92,15 @@ public class DataManager {
     public void RemoveStop(Stop stop) {
         Stops.Remove(stop);
         SynchronizeStops();
+    }
+
+     public void AddDriver(Driver driver) {
+        Drivers.Add(driver);
+        SynchronizeDrivers();
+    }
+
+    public void RemoveDriver(Driver driver) {
+        Drivers.Remove(driver);
+        SynchronizeDrivers();
     }
 }
