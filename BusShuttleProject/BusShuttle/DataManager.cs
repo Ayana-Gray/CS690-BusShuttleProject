@@ -50,7 +50,7 @@ public class DataManager {
             var passengerFileContent = File.ReadAllLines("passenger-data.txt");
             foreach(var line in passengerFileContent) {
                 var splitted = line.Split(":",StringSplitOptions.RemoveEmptyEntries);
-                var driverName = splitted[0];
+                var driverName = splitted[1];
                 var driver = new Driver(driverName);
 
                 var loopName= splitted[1];
